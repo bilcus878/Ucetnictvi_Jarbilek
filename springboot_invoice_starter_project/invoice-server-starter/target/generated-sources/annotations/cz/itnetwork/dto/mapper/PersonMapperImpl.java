@@ -13,55 +13,53 @@ import org.springframework.stereotype.Component;
 public class PersonMapperImpl implements PersonMapper {
 
     @Override
-    public PersonEntity toEntity(PersonDTO source) {
-        if ( source == null ) {
+    public PersonEntity toEntity(PersonDTO dto) {
+        if ( dto == null ) {
             return null;
         }
 
         PersonEntity personEntity = new PersonEntity();
 
-        if ( source.getId() != null ) {
-            personEntity.setId( source.getId() );
-        }
-        personEntity.setName( source.getName() );
-        personEntity.setIdentificationNumber( source.getIdentificationNumber() );
-        personEntity.setTaxNumber( source.getTaxNumber() );
-        personEntity.setAccountNumber( source.getAccountNumber() );
-        personEntity.setBankCode( source.getBankCode() );
-        personEntity.setIban( source.getIban() );
-        personEntity.setTelephone( source.getTelephone() );
-        personEntity.setMail( source.getMail() );
-        personEntity.setStreet( source.getStreet() );
-        personEntity.setZip( source.getZip() );
-        personEntity.setCity( source.getCity() );
-        personEntity.setCountry( source.getCountry() );
-        personEntity.setNote( source.getNote() );
+        personEntity.setId( dto.getId() );
+        personEntity.setName( dto.getName() );
+        personEntity.setIdentificationNumber( dto.getIdentificationNumber() );
+        personEntity.setTaxNumber( dto.getTaxNumber() );
+        personEntity.setAccountNumber( dto.getAccountNumber() );
+        personEntity.setBankCode( dto.getBankCode() );
+        personEntity.setIban( dto.getIban() );
+        personEntity.setTelephone( dto.getTelephone() );
+        personEntity.setMail( dto.getMail() );
+        personEntity.setStreet( dto.getStreet() );
+        personEntity.setZip( dto.getZip() );
+        personEntity.setCity( dto.getCity() );
+        personEntity.setCountry( dto.getCountry() );
+        personEntity.setNote( dto.getNote() );
 
         return personEntity;
     }
 
     @Override
-    public PersonDTO toDTO(PersonEntity source) {
-        if ( source == null ) {
+    public PersonDTO toDTO(PersonEntity entity) {
+        if ( entity == null ) {
             return null;
         }
 
         PersonDTO personDTO = new PersonDTO();
 
-        personDTO.setId( source.getId() );
-        personDTO.setName( source.getName() );
-        personDTO.setIdentificationNumber( source.getIdentificationNumber() );
-        personDTO.setTaxNumber( source.getTaxNumber() );
-        personDTO.setAccountNumber( source.getAccountNumber() );
-        personDTO.setBankCode( source.getBankCode() );
-        personDTO.setIban( source.getIban() );
-        personDTO.setTelephone( source.getTelephone() );
-        personDTO.setMail( source.getMail() );
-        personDTO.setStreet( source.getStreet() );
-        personDTO.setZip( source.getZip() );
-        personDTO.setCity( source.getCity() );
-        personDTO.setCountry( source.getCountry() );
-        personDTO.setNote( source.getNote() );
+        personDTO.setId( entity.getId() );
+        personDTO.setName( entity.getName() );
+        personDTO.setIdentificationNumber( entity.getIdentificationNumber() );
+        personDTO.setTaxNumber( entity.getTaxNumber() );
+        personDTO.setAccountNumber( entity.getAccountNumber() );
+        personDTO.setBankCode( entity.getBankCode() );
+        personDTO.setIban( entity.getIban() );
+        personDTO.setTelephone( entity.getTelephone() );
+        personDTO.setMail( entity.getMail() );
+        personDTO.setStreet( entity.getStreet() );
+        personDTO.setZip( entity.getZip() );
+        personDTO.setCity( entity.getCity() );
+        personDTO.setCountry( entity.getCountry() );
+        personDTO.setNote( entity.getNote() );
 
         return personDTO;
     }

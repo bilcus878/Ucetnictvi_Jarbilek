@@ -26,17 +26,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Entity(name = "person")
+@Entity
+@Table(name = "person")
 @Getter
 @Setter
 public class PersonEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private String name;
@@ -69,12 +67,13 @@ public class PersonEntity {
     @Column(nullable = false)
     private String city;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Countries country;
 
     private String note;
 
+    @Column(nullable = false)
     private boolean hidden = false;
-
 }
+

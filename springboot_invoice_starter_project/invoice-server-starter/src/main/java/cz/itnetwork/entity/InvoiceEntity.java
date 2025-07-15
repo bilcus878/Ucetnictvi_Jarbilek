@@ -27,18 +27,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
-@Entity(name = "invoice")
+@Entity
+@Table(name = "invoice")
 @Getter
 @Setter
 public class InvoiceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(nullable = false)
     private int invoiceNumber;
@@ -61,24 +59,14 @@ public class InvoiceEntity {
     @Column(nullable = false)
     private String note;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "buyer_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_id", nullable = false)
     private PersonEntity buyer;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "seller_id")
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "seller_id", nullable = false)
     private PersonEntity seller;
 
     @Column(nullable = false)
     private boolean hidden = false;
-
-    public boolean isHidden() {
-        return hidden;
-    }
-
-    public void setHidden(boolean hidden) {
-        this.hidden = hidden;
-    }
-
-
 }

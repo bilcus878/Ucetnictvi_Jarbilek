@@ -28,6 +28,7 @@ import java.util.List;
 
 public interface PersonRepository extends JpaRepository<PersonEntity, Long> {
 
+    // Vrátí seznam osob, kde je nastaveno pole 'hidden' podle hodnoty parametru (true/false)
     List<PersonEntity> findByHidden(boolean hidden);
 
 }

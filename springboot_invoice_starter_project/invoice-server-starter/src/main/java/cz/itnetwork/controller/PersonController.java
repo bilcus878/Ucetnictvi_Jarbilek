@@ -2,40 +2,54 @@ package cz.itnetwork.controller;
 
 import cz.itnetwork.dto.PersonDTO;
 import cz.itnetwork.service.PersonService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/persons")
 public class PersonController {
 
-    @Autowired
-    private PersonService personService;
+    private final PersonService personService;
 
-    @PostMapping("/persons")
-    public PersonDTO addPerson(@RequestBody PersonDTO personDTO) {
+    @Autowired
+    public PersonController(PersonService personService) {
+        this.personService = personService;
+    }
+
+    // HTTP POST metoda pro vytvoření nové osoby
+    @PostMapping
+    public PersonDTO addPerson(@Valid @RequestBody PersonDTO personDTO) {
         return personService.addPerson(personDTO);
     }
 
-    @GetMapping("/persons")
+    // HTTP GET metoda pro získání seznamu všech osob
+    @GetMapping
     public List<PersonDTO> getPersons() {
         return personService.getAll();
     }
 
-    @GetMapping("/persons/{personId}")
+    // HTTP GET metoda pro získání osoby podle jejího ID
+    @GetMapping("/{personId}")
     public PersonDTO getPersonById(@PathVariable long personId) {
         return personService.getPerson(personId);
     }
 
-    @DeleteMapping("/persons/{personId}")
+    // HTTP DELETE metoda pro smazání osoby podle ID
+    @DeleteMapping("/{personId}")
     public void deletePerson(@PathVariable Long personId) {
         personService.removePerson(personId);
     }
 
-    @PutMapping("/persons/{personId}")
-    public PersonDTO updatePerson(@PathVariable long personId, @RequestBody PersonDTO personDTO) {
+    // HTTP PUT metoda pro aktualizaci osoby podle ID s novými daty
+    @PutMapping("/{personId}")
+    public PersonDTO updatePerson(@PathVariable long personId, @Valid @RequestBody PersonDTO personDTO) {
         return personService.updatePerson(personId, personDTO);
     }
 }
+
+
+
+

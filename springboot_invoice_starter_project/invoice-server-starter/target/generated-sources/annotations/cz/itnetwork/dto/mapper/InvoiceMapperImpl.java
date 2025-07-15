@@ -18,52 +18,50 @@ public class InvoiceMapperImpl implements InvoiceMapper {
     private PersonMapper personMapper;
 
     @Override
-    public InvoiceEntity toEntity(InvoiceDTO source) {
-        if ( source == null ) {
+    public InvoiceEntity toEntity(InvoiceDTO dto) {
+        if ( dto == null ) {
             return null;
         }
 
         InvoiceEntity invoiceEntity = new InvoiceEntity();
 
-        if ( source.getId() != null ) {
-            invoiceEntity.setId( source.getId() );
-        }
-        invoiceEntity.setInvoiceNumber( source.getInvoiceNumber() );
-        invoiceEntity.setIssued( source.getIssued() );
-        invoiceEntity.setDueDate( source.getDueDate() );
-        invoiceEntity.setProduct( source.getProduct() );
-        invoiceEntity.setPrice( source.getPrice() );
-        invoiceEntity.setVat( source.getVat() );
-        invoiceEntity.setNote( source.getNote() );
+        invoiceEntity.setId( dto.getId() );
+        invoiceEntity.setInvoiceNumber( dto.getInvoiceNumber() );
+        invoiceEntity.setIssued( dto.getIssued() );
+        invoiceEntity.setDueDate( dto.getDueDate() );
+        invoiceEntity.setProduct( dto.getProduct() );
+        invoiceEntity.setPrice( dto.getPrice() );
+        invoiceEntity.setVat( dto.getVat() );
+        invoiceEntity.setNote( dto.getNote() );
 
         return invoiceEntity;
     }
 
     @Override
-    public InvoiceDTO toDTO(InvoiceEntity source) {
-        if ( source == null ) {
+    public InvoiceDTO toDTO(InvoiceEntity entity) {
+        if ( entity == null ) {
             return null;
         }
 
         InvoiceDTO invoiceDTO = new InvoiceDTO();
 
-        invoiceDTO.setSellerId( sourceSellerId( source ) );
-        invoiceDTO.setBuyerId( sourceBuyerId( source ) );
-        invoiceDTO.setId( source.getId() );
-        invoiceDTO.setInvoiceNumber( source.getInvoiceNumber() );
-        invoiceDTO.setIssued( source.getIssued() );
-        invoiceDTO.setDueDate( source.getDueDate() );
-        invoiceDTO.setProduct( source.getProduct() );
-        invoiceDTO.setPrice( source.getPrice() );
-        invoiceDTO.setVat( source.getVat() );
-        invoiceDTO.setNote( source.getNote() );
-        invoiceDTO.setSeller( personMapper.toDTO( source.getSeller() ) );
-        invoiceDTO.setBuyer( personMapper.toDTO( source.getBuyer() ) );
+        invoiceDTO.setSellerId( entitySellerId( entity ) );
+        invoiceDTO.setBuyerId( entityBuyerId( entity ) );
+        invoiceDTO.setSeller( personMapper.toDTO( entity.getSeller() ) );
+        invoiceDTO.setBuyer( personMapper.toDTO( entity.getBuyer() ) );
+        invoiceDTO.setId( entity.getId() );
+        invoiceDTO.setInvoiceNumber( entity.getInvoiceNumber() );
+        invoiceDTO.setIssued( entity.getIssued() );
+        invoiceDTO.setDueDate( entity.getDueDate() );
+        invoiceDTO.setProduct( entity.getProduct() );
+        invoiceDTO.setPrice( entity.getPrice() );
+        invoiceDTO.setVat( entity.getVat() );
+        invoiceDTO.setNote( entity.getNote() );
 
         return invoiceDTO;
     }
 
-    private Long sourceSellerId(InvoiceEntity invoiceEntity) {
+    private Long entitySellerId(InvoiceEntity invoiceEntity) {
         if ( invoiceEntity == null ) {
             return null;
         }
@@ -71,11 +69,14 @@ public class InvoiceMapperImpl implements InvoiceMapper {
         if ( seller == null ) {
             return null;
         }
-        long id = seller.getId();
+        Long id = seller.getId();
+        if ( id == null ) {
+            return null;
+        }
         return id;
     }
 
-    private Long sourceBuyerId(InvoiceEntity invoiceEntity) {
+    private Long entityBuyerId(InvoiceEntity invoiceEntity) {
         if ( invoiceEntity == null ) {
             return null;
         }
@@ -83,7 +84,10 @@ public class InvoiceMapperImpl implements InvoiceMapper {
         if ( buyer == null ) {
             return null;
         }
-        long id = buyer.getId();
+        Long id = buyer.getId();
+        if ( id == null ) {
+            return null;
+        }
         return id;
     }
 }

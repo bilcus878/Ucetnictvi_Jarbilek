@@ -28,11 +28,22 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public InvoiceDTO addInvoice(InvoiceDTO invoiceDTO) {
         InvoiceEntity entity = invoiceMapper.toEntity(invoiceDTO);
-        
-        PersonEntity seller = personRepository.findById(invoiceDTO.getSellerId())
-                .orElseThrow(() -> new NotFoundException("Seller with id " + invoiceDTO.getSellerId() + " not found"));
-        PersonEntity buyer = personRepository.findById(invoiceDTO.getBuyerId())
-                .orElseThrow(() -> new NotFoundException("Buyer with id " + invoiceDTO.getBuyerId() + " not found"));
+
+        // Získání ID z objektů seller a buyer v DTO
+        Long sellerId = (invoiceDTO.getSeller() != null) ? invoiceDTO.getSeller().getId() : null;
+        Long buyerId = (invoiceDTO.getBuyer() != null) ? invoiceDTO.getBuyer().getId() : null;
+
+        if (sellerId == null) {
+            throw new IllegalArgumentException("Seller id must not be null");
+        }
+        if (buyerId == null) {
+            throw new IllegalArgumentException("Buyer id must not be null");
+        }
+
+        PersonEntity seller = personRepository.findById(sellerId)
+                .orElseThrow(() -> new NotFoundException("Seller with id " + sellerId + " not found"));
+        PersonEntity buyer = personRepository.findById(buyerId)
+                .orElseThrow(() -> new NotFoundException("Buyer with id " + buyerId + " not found"));
 
         entity.setSeller(seller);
         entity.setBuyer(buyer);
@@ -87,10 +98,20 @@ public class InvoiceServiceImpl implements InvoiceService {
         existing.setVat(invoiceDTO.getVat());
         existing.setNote(invoiceDTO.getNote());
 
-        PersonEntity seller = personRepository.findById(invoiceDTO.getSellerId())
-                .orElseThrow(() -> new NotFoundException("Seller with id " + invoiceDTO.getSellerId() + " not found"));
-        PersonEntity buyer = personRepository.findById(invoiceDTO.getBuyerId())
-                .orElseThrow(() -> new NotFoundException("Buyer with id " + invoiceDTO.getBuyerId() + " not found"));
+        Long sellerId = (invoiceDTO.getSeller() != null) ? invoiceDTO.getSeller().getId() : null;
+        Long buyerId = (invoiceDTO.getBuyer() != null) ? invoiceDTO.getBuyer().getId() : null;
+
+        if (sellerId == null) {
+            throw new IllegalArgumentException("Seller id must not be null");
+        }
+        if (buyerId == null) {
+            throw new IllegalArgumentException("Buyer id must not be null");
+        }
+
+        PersonEntity seller = personRepository.findById(sellerId)
+                .orElseThrow(() -> new NotFoundException("Seller with id " + sellerId + " not found"));
+        PersonEntity buyer = personRepository.findById(buyerId)
+                .orElseThrow(() -> new NotFoundException("Buyer with id " + buyerId + " not found"));
 
         existing.setSeller(seller);
         existing.setBuyer(buyer);
@@ -104,3 +125,5 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .orElseThrow(() -> new NotFoundException("Invoice with id " + id + " wasn't found in the database."));
     }
 }
+
+

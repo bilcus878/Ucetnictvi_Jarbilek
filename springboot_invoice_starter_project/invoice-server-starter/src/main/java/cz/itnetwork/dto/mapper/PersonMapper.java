@@ -25,11 +25,13 @@ import cz.itnetwork.dto.PersonDTO;
 import cz.itnetwork.entity.PersonEntity;
 import org.mapstruct.Mapper;
 
-
 @Mapper(componentModel = "spring")
 public interface PersonMapper {
 
-    PersonEntity toEntity(PersonDTO source);
+    // Převod z DTO na entitu
+    PersonEntity toEntity(PersonDTO dto);
 
-    PersonDTO toDTO(PersonEntity source);
+    // Převod z entity na DTO
+    PersonDTO toDTO(PersonEntity entity);
 }
+
