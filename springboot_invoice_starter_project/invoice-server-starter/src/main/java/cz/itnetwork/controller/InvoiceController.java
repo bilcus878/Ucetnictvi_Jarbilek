@@ -41,7 +41,7 @@ public class InvoiceController {
 
     // "Smazání" faktury – nastaví ji jako skrytou (hidden = true)
     @DeleteMapping("/{invoiceId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT) // HTTP 204 při úspěchu, bez obsahu v odpovědi
+    @ResponseStatus(HttpStatus.NO_CONTENT) // HTTP 204 při úspěchu, bez obsahu
     public void deleteInvoice(@PathVariable long invoiceId) {
         invoiceService.removeInvoice(invoiceId);
     }
@@ -56,6 +56,11 @@ public class InvoiceController {
     @GetMapping("/received/{buyerId}")
     public List<InvoiceDTO> getInvoicesByBuyer(@PathVariable Long buyerId) {
         return invoiceService.getInvoicesByBuyer(buyerId);
+    }
+
+    @PutMapping("/{invoiceId}")
+    public InvoiceDTO updateInvoice(@PathVariable Long invoiceId, @RequestBody InvoiceDTO invoiceDTO) {
+        return invoiceService.updateInvoice(invoiceId, invoiceDTO);
     }
 
 }
