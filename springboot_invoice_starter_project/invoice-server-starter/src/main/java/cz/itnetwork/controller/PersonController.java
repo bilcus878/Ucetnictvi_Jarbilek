@@ -1,6 +1,7 @@
 package cz.itnetwork.controller;
 
 import cz.itnetwork.dto.PersonDTO;
+import cz.itnetwork.dto.PersonStatisticsDTO;
 import cz.itnetwork.service.PersonService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,12 @@ public class PersonController {
     public PersonDTO updatePerson(@PathVariable long personId, @Valid @RequestBody PersonDTO personDTO) {
         return personService.updatePerson(personId, personDTO);
     }
+
+    @GetMapping("/statistics")
+    public List<PersonStatisticsDTO> getPersonStatistics() {
+        return personService.getPersonStatistics();
+    }
+
 }
 
 

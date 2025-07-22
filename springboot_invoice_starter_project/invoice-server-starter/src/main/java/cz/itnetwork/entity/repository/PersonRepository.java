@@ -21,14 +21,29 @@
  */
 package cz.itnetwork.entity.repository;
 
+import cz.itnetwork.dto.PersonStatisticsDTO;
 import cz.itnetwork.entity.PersonEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
 public interface PersonRepository extends JpaRepository<PersonEntity, Long> {
 
-    // Vrátí seznam osob, kde je nastaveno pole 'hidden' podle hodnoty parametru (true/false)
     List<PersonEntity> findByHidden(boolean hidden);
 
+    @Query("""
+    SELECT new cz.itnetwork.dto.PersonStatisticsDTO(
+        p.id, p.name, COALESCE(SUM(i.price), 0)
+    )
+    FROM PersonEntity p
+    LEFT JOIN InvoiceEntity i ON i.seller = p
+    WHERE p.hidden = false
+    GROUP BY p.id, p.name
+""")
+    List<PersonStatisticsDTO> calculatePersonStatistics();
+
 }
+
+
+

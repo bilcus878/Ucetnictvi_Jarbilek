@@ -1,7 +1,7 @@
 package cz.itnetwork.service;
 
 import cz.itnetwork.dto.PersonDTO;
-
+import cz.itnetwork.dto.PersonStatisticsDTO;
 import java.util.List;
 
 public interface PersonService {
@@ -20,6 +20,8 @@ public interface PersonService {
 
     // Aktualizuje existující osobu podle ID novými daty z personDTO a vrátí aktualizovaný PersonDTO objekt
     PersonDTO updatePerson(long id, PersonDTO personDTO);
+
+    List<PersonStatisticsDTO> getPersonStatistics();
 
     }
 

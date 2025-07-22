@@ -1,6 +1,7 @@
 package cz.itnetwork.service;
 
 import cz.itnetwork.dto.InvoiceDTO;
+import cz.itnetwork.dto.InvoiceStatisticsDTO;
 import java.util.List;
 
 public interface InvoiceService {
@@ -18,5 +19,8 @@ public interface InvoiceService {
     List<InvoiceDTO> getInvoicesByBuyer(Long buyerId);
 
     InvoiceDTO updateInvoice(long id, InvoiceDTO invoiceDTO);
+
+    InvoiceStatisticsDTO getInvoiceStatistics();
+
 }
 

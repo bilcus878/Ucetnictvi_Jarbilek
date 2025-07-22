@@ -1,6 +1,7 @@
 package cz.itnetwork.service;
 
 import cz.itnetwork.dto.InvoiceDTO;
+import cz.itnetwork.dto.InvoiceStatisticsDTO;
 import cz.itnetwork.dto.mapper.InvoiceMapper;
 import cz.itnetwork.entity.InvoiceEntity;
 import cz.itnetwork.entity.PersonEntity;
@@ -9,7 +10,9 @@ import cz.itnetwork.entity.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
+import java.math.BigDecimal;
 
+import java.time.Year;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,7 +32,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceDTO addInvoice(InvoiceDTO invoiceDTO) {
         InvoiceEntity entity = invoiceMapper.toEntity(invoiceDTO);
 
-        // Fallback – vezme buď přímo sellerId/buyerId, nebo z objektu seller/buyer
         Long sellerId = invoiceDTO.getSellerId() != null
                 ? invoiceDTO.getSellerId()
                 : (invoiceDTO.getSeller() != null ? invoiceDTO.getSeller().getId() : null);
@@ -95,6 +97,23 @@ public class InvoiceServiceImpl implements InvoiceService {
     }
 
     @Override
+    public InvoiceStatisticsDTO getInvoiceStatistics() {
+        int currentYear = Year.now().getValue();
+
+        // Změna typu na BigDecimal a získání hodnot z repository
+        BigDecimal currentYearSum = invoiceRepository.sumPriceByYearAndHiddenFalse(currentYear);
+        BigDecimal allTimeSum = invoiceRepository.sumPriceAllTimeAndHiddenFalse();
+        long invoicesCount = invoiceRepository.countByHiddenFalse();
+
+        InvoiceStatisticsDTO stats = new InvoiceStatisticsDTO();
+        stats.setCurrentYearSum(currentYearSum);
+        stats.setAllTimeSum(allTimeSum);
+        stats.setInvoicesCount(invoicesCount);
+
+        return stats;
+    }
+
+    @Override
     public InvoiceDTO updateInvoice(long id, InvoiceDTO invoiceDTO) {
         InvoiceEntity existing = fetchInvoiceById(id);
 
@@ -110,7 +129,6 @@ public class InvoiceServiceImpl implements InvoiceService {
         existing.setVat(invoiceDTO.getVat());
         existing.setNote(invoiceDTO.getNote());
 
-        // Fallback opět jako v addInvoice
         Long sellerId = invoiceDTO.getSellerId() != null
                 ? invoiceDTO.getSellerId()
                 : (invoiceDTO.getSeller() != null ? invoiceDTO.getSeller().getId() : null);
@@ -141,4 +159,3 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .orElseThrow(() -> new NotFoundException("Invoice with id " + id + " wasn't found in the database."));
     }
 }
-

@@ -2,20 +2,30 @@ package cz.itnetwork.entity.repository;
 
 import cz.itnetwork.entity.InvoiceEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface InvoiceRepository extends JpaRepository<InvoiceEntity, Long> {
 
-    // Vrátí seznam faktur, kde je nastaveno pole 'hidden' na hodnotu parametru (true/false)
     List<InvoiceEntity> findByHidden(boolean hidden);
 
-    // Vrátí seznam faktur, které nejsou skryté (hidden = false)
     List<InvoiceEntity> findByHiddenFalse();
 
-    // Vrátí seznam faktur, které patří konkrétnímu prodávajícímu (sellerId) a nejsou skryté
     List<InvoiceEntity> findBySellerIdAndHiddenFalse(Long sellerId);
 
-    // Vrátí seznam faktur, které patří konkrétnímu kupujícímu (buyerId) a nejsou skryté
     List<InvoiceEntity> findByBuyerIdAndHiddenFalse(Long buyerId);
 
+    // Statistiky ↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+    @Query("SELECT COALESCE(SUM(i.price), 0) FROM InvoiceEntity i WHERE YEAR(i.issued) = :year AND i.hidden = false")
+    BigDecimal sumPriceByYearAndHiddenFalse(@Param("year") int year);
+
+    @Query("SELECT COALESCE(SUM(i.price), 0) FROM InvoiceEntity i WHERE i.hidden = false")
+    BigDecimal sumPriceAllTimeAndHiddenFalse();
+
+    long countByHiddenFalse();
 }
+
