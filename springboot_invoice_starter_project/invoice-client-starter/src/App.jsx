@@ -34,20 +34,30 @@ import PersonIndex from "./persons/PersonIndex";
 import PersonDetail from "./persons/PersonDetail";
 import PersonForm from "./persons/PersonForm";
 
+import InvoiceIndex from "./Invoices/Invoiceindex";
+import InvoiceForm from "./Invoices/InvoiceForm";
+//import InvoiceDetail from "./Invoices/InvoiceDetail";
+import InfoiceForm from "./Invoices/InvoiceForm";
+
+
 export function App() {
   return (
     <Router>
       <div className="container">
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
+          <ul className="navbar-nav d-flex flex-row">
+            <li className="nav-item me-2">
               <Link to={"/persons"} className="nav-link">
                 Osoby
               </Link>
             </li>
+            <li className="nav-item">
+              <Link to={"/invoices"} className="nav-link">
+                Faktury
+              </Link>
+            </li>
           </ul>
         </nav>
-
         <Routes>
           <Route index element={<Navigate to={"/persons"} />} />
           <Route path="/persons">
@@ -55,6 +65,11 @@ export function App() {
             <Route path="show/:id" element={<PersonDetail />} />
             <Route path="create" element={<PersonForm />} />
             <Route path="edit/:id" element={<PersonForm />} />
+          </Route>
+          <Route path="/invoices">
+            <Route index element={<InvoiceIndex />} />
+            <Route path="create" element={<InvoiceForm />} />
+            <Route path="/invoices/edit/:id" element={<InvoiceForm editMode={true} />} />
           </Route>
         </Routes>
       </div>
