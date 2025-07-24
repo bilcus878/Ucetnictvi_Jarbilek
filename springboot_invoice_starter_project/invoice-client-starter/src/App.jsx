@@ -36,7 +36,7 @@ import PersonForm from "./persons/PersonForm";
 
 import InvoiceIndex from "./Invoices/Invoiceindex";
 import InvoiceForm from "./Invoices/InvoiceForm";
-//import InvoiceDetail from "./Invoices/InvoiceDetail";
+import InvoiceDetail from "./Invoices/InvoiceDetail";
 import InfoiceForm from "./Invoices/InvoiceForm";
 
 
@@ -66,10 +66,11 @@ export function App() {
             <Route path="create" element={<PersonForm />} />
             <Route path="edit/:id" element={<PersonForm />} />
           </Route>
-          <Route path="/invoices">
-            <Route index element={<InvoiceIndex />} />
-            <Route path="create" element={<InvoiceForm />} />
-            <Route path="/invoices/edit/:id" element={<InvoiceForm editMode={true} />} />
+            <Route path="/invoices">
+              <Route index element={<InvoiceIndex />} />
+              <Route path="show/:id" element={<InvoiceDetail />} />
+              <Route path="create" element={<InvoiceForm />} />
+              <Route path="/invoices/edit/:id" element={<InvoiceForm editMode={true} />} />
           </Route>
         </Routes>
       </div>

@@ -30,7 +30,6 @@ useEffect(() => {
   if (editMode && id) {
     apiGet(`/api/invoices/${id}`)
       .then((data) => {
-        // Převod datumu na YYYY-MM-DD formát:
         const formatDate = (dateString) => {
           if (!dateString) return "";
           const d = new Date(dateString);
