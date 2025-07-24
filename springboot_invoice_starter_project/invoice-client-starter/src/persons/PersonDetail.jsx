@@ -20,64 +20,99 @@
  * Více informací na http://www.itnetwork.cz/licence
  */
 
-import React, {useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { apiGet } from "../utils/api";
 import Country from "./Country";
 
 const PersonDetail = () => {
-    const {id} = useParams();
-    const [person, setPerson] = useState({});
+  const { id } = useParams();
+  const [person, setPerson] = useState({});
+  const navigate = useNavigate();
 
-    useEffect(() => {
-        apiGet("/api/persons/" + id).then(data => {
-                setPerson(data)
-            }).catch(err => {
-                    console.error(err);
-            });
-    }, [id]);
-    const country = Country.CZECHIA === person.country ? "Česká republika" : "Slovensko";
+  useEffect(() => {
+    apiGet("/api/persons/" + id)
+      .then((data) => {
+        setPerson(data);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }, [id]);
 
-    return (
-        <>
-            <div>
-                <h1>Detail osoby</h1>
-                <hr/>
-                <h3>{person.name} ({person.identificationNumber})</h3>
-                <p>
-                    <strong>DIČ:</strong>
-                    <br/>
-                    {person.taxNumber}
-                </p>
-                <p>
-                    <strong>Bankovní účet:</strong>
-                    <br/>
-                    {person.accountNumber}/{person.bankCode} ({person.iban})
-                </p>
-                <p>
-                    <strong>Tel.:</strong>
-                    <br/>
-                    {person.telephone}
-                </p>
-                <p>
-                    <strong>Mail:</strong>
-                    <br/>
-                    {person.mail}
-                </p>
-                <p>
-                    <strong>Sídlo:</strong>
-                    <br/>
-                    {person.street}, {person.city},
-                    {person.zip}, {country}
-                </p>
-                <p>
-                    <strong>Poznámka:</strong>
-                    <br/>
-                    {person.note}
-                </p>
-            </div>
-        </>
-    );
+  const country =
+    Country.CZECHIA === person.country ? "Česká republika" : "Slovensko";
+
+  return (
+    <>
+      <div>
+        <h1>Detail osoby</h1>
+        <hr />
+        <h3>
+          {person.name} ({person.identificationNumber})
+        </h3>
+        <p>
+          <strong>DIČ:</strong>
+          <br />
+          {person.taxNumber}
+        </p>
+        <p>
+          <strong>Bankovní účet:</strong>
+          <br />
+          {person.accountNumber}/{person.bankCode} ({person.iban})
+        </p>
+        <p>
+          <strong>Tel.:</strong>
+          <br />
+          {person.telephone}
+        </p>
+        <p>
+          <strong>Mail:</strong>
+          <br />
+          {person.mail}
+        </p>
+        <p>
+          <strong>Sídlo:</strong>
+          <br />
+          {person.street}, {person.city}, {person.zip}, {country}
+        </p>
+        <p>
+          <strong>Poznámka:</strong>
+          <br />
+          {person.note}
+        </p>
+
+        {/* 🔽 Přidaná sekce Faktury */}
+        <hr />
+        <h3>Faktury</h3>
+        <button
+          onClick={() => navigate("/invoices/sent/" + person._id)}
+          style={{
+            backgroundColor: "green",
+            color: "white",
+            marginRight: "10px",
+            padding: "8px 16px",
+            border: "none",
+            borderRadius: "4px",
+          }}
+        >
+          Vystavené
+        </button>
+        <button
+          onClick={() => navigate("/invoices/received/" + person._id)}
+          style={{
+            backgroundColor: "orange",
+            color: "white",
+            padding: "8px 16px",
+            border: "none",
+            borderRadius: "4px",
+          }}
+        >
+          Přijaté
+        </button>
+      </div>
+    </>
+  );
 };
 
 export default PersonDetail;

@@ -66,3 +66,26 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Přidáno pro fakturační tlačítka */
+.invoice-button {
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-right: 5px;
+}
+
+.invoice-button.sent {
+  background-color: green;
+}
+
+.invoice-button.received {
+  background-color: orange;
+}
+
+.invoice-button:hover {
+  opacity: 0.9;
+}

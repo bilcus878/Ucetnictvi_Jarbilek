@@ -38,6 +38,9 @@ import InvoiceIndex from "./Invoices/Invoiceindex";
 import InvoiceForm from "./Invoices/InvoiceForm";
 import InvoiceDetail from "./Invoices/InvoiceDetail";
 import InfoiceForm from "./Invoices/InvoiceForm";
+import InvoicesSent from "./Invoices/InvoicesSent";
+import InvoicesReceived from "./Invoices/InvoicesReceived";
+
 
 
 export function App() {
@@ -71,6 +74,8 @@ export function App() {
               <Route path="show/:id" element={<InvoiceDetail />} />
               <Route path="create" element={<InvoiceForm />} />
               <Route path="/invoices/edit/:id" element={<InvoiceForm editMode={true} />} />
+              <Route path="/invoices/sent/:id" element={<InvoicesSent />} />
+              <Route path="/invoices/received/:id" element={<InvoicesReceived />} />
           </Route>
         </Routes>
       </div>
