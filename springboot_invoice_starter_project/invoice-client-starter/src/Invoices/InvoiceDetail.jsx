@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { apiGet } from "../utils/api";
 
 const InvoiceDetail = () => {
   const { id } = useParams();
+  const navigate = useNavigate(); // ← tady přidej useNavigate
   const [invoice, setInvoice] = useState(null);
 
   useEffect(() => {
@@ -19,6 +20,7 @@ const InvoiceDetail = () => {
 
   return (
     <>
+      <div className="page-container">
       <div>
         <h1>Detail faktury</h1>
         <hr />
@@ -52,8 +54,18 @@ const InvoiceDetail = () => {
           {invoice.buyer?.name} ({invoice.buyer?.identificationNumber})
         </p>
       </div>
+      <div className="button-container">
+        <button
+          onClick={() => navigate("/invoices")}
+          className="back-button"
+        >
+          Zpět
+        </button>
+      </div>
+      </div>
     </>
   );
 };
 
 export default InvoiceDetail;
+

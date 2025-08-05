@@ -19,11 +19,8 @@ const InvoicesSent = () => {
   }, [id]);
 
   return (
-    <div>
+    <div className="page-container">
       <h1>Vystavené faktury osoby {id}</h1>
-      <button onClick={() => navigate(-1)} style={{marginBottom: "10px"}}>
-        ← Zpět
-      </button>
       {invoices.length === 0 ? (
         <p>Žádné vystavené faktury.</p>
       ) : (
@@ -58,6 +55,12 @@ const InvoicesSent = () => {
           </tbody>
         </table>
       )}
+      {/* Tlačítko Zpět je teď správně uvnitř page-container */}
+      <div className="button-container">
+        <button onClick={() => navigate(-1)} className="back-button">
+          Zpět
+        </button>
+      </div>
     </div>
   );
 };

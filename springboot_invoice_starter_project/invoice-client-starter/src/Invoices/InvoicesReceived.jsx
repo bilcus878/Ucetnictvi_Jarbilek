@@ -19,11 +19,9 @@ const InvoicesReceived = () => {
   }, [id]);
 
   return (
-    <div>
+    <div className="page-container">
       <h1>Přijaté faktury osoby {id}</h1>
-      <button onClick={() => navigate(-1)} style={{marginBottom: "10px"}}>
-        ← Zpět
-      </button>
+
       {invoices.length === 0 ? (
         <p>Žádné přijaté faktury.</p>
       ) : (
@@ -58,6 +56,12 @@ const InvoicesReceived = () => {
           </tbody>
         </table>
       )}
+
+      <div className="button-container">
+        <button onClick={() => navigate(-1)} className="back-button">
+          Zpět
+        </button>
+      </div>
     </div>
   );
 };

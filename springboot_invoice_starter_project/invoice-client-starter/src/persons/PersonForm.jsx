@@ -273,7 +273,19 @@ const PersonForm = () => {
 
                 <input type="submit" className="btn btn-primary" value="Uložit"/>
             </form>
+
+        <div className="page-container">
+            <div className="button-container">
+                <button
+                    onClick={() => navigate("/persons")}
+                    className="back-button"
+                    >
+                    Zpět
+                </button>
+            </div>
         </div>
+    </div>
+        
     );
 };
 

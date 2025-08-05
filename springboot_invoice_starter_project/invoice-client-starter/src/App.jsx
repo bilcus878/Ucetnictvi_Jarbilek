@@ -37,11 +37,11 @@ import PersonForm from "./persons/PersonForm";
 import InvoiceIndex from "./Invoices/Invoiceindex";
 import InvoiceForm from "./Invoices/InvoiceForm";
 import InvoiceDetail from "./Invoices/InvoiceDetail";
-import InfoiceForm from "./Invoices/InvoiceForm";
 import InvoicesSent from "./Invoices/InvoicesSent";
 import InvoicesReceived from "./Invoices/InvoicesReceived";
 
-
+import StatisticsIndex from "./statistics/StatisticsIndex";     
+import StatisticsDetail from "./statistics/StatisticsDetail";  
 
 export function App() {
   return (
@@ -54,29 +54,43 @@ export function App() {
                 Osoby
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="nav-item me-2">
               <Link to={"/invoices"} className="nav-link">
                 Faktury
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to={"/statistics"} className="nav-link">
+                Statistiky
               </Link>
             </li>
           </ul>
         </nav>
         <Routes>
           <Route index element={<Navigate to={"/persons"} />} />
+
           <Route path="/persons">
             <Route index element={<PersonIndex />} />
             <Route path="show/:id" element={<PersonDetail />} />
             <Route path="create" element={<PersonForm />} />
             <Route path="edit/:id" element={<PersonForm />} />
           </Route>
-            <Route path="/invoices">
-              <Route index element={<InvoiceIndex />} />
-              <Route path="show/:id" element={<InvoiceDetail />} />
-              <Route path="create" element={<InvoiceForm />} />
-              <Route path="/invoices/edit/:id" element={<InvoiceForm editMode={true} />} />
-              <Route path="/invoices/sent/:id" element={<InvoicesSent />} />
-              <Route path="/invoices/received/:id" element={<InvoicesReceived />} />
+
+          <Route path="/invoices">
+            <Route index element={<InvoiceIndex />} />
+            <Route path="show/:id" element={<InvoiceDetail />} />
+            <Route path="create" element={<InvoiceForm />} />
+            <Route path="edit/:id" element={<InvoiceForm editMode={true} />} />
+            <Route path="sent/:id" element={<InvoicesSent />} />
+            <Route path="received/:id" element={<InvoicesReceived />} />
           </Route>
+
+          {/* Nové routy pro Statistiky */}
+          <Route path="/statistics">
+            <Route index element={<StatisticsIndex />} />
+            <Route path="show/:id" element={<StatisticsDetail />} />
+          </Route>
+
         </Routes>
       </div>
     </Router>

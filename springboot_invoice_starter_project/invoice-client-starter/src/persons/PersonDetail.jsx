@@ -44,7 +44,8 @@ const PersonDetail = () => {
     Country.CZECHIA === person.country ? "Česká republika" : "Slovensko";
 
   return (
-    <>
+    <>=
+    <div className="page-container">
       <div>
         <h1>Detail osoby</h1>
         <hr />
@@ -85,31 +86,28 @@ const PersonDetail = () => {
         {/* 🔽 Přidaná sekce Faktury */}
         <hr />
         <h3>Faktury</h3>
+                    <button
+                        onClick={() => navigate("/invoices/sent/" + person._id)}
+                        className="invoice-button sent"
+                    >
+                    Vystavené
+                    </button>
+                    <button
+                        onClick={() => navigate("/invoices/received/" + person._id)}
+                        className="invoice-button received"
+                    >
+                    Přijaté
+                    </button>
+      </div>
+            
+      <div className="button-container">
         <button
-          onClick={() => navigate("/invoices/sent/" + person._id)}
-          style={{
-            backgroundColor: "green",
-            color: "white",
-            marginRight: "10px",
-            padding: "8px 16px",
-            border: "none",
-            borderRadius: "4px",
-          }}
+          onClick={() => navigate("/persons")}
+          className="back-button"
         >
-          Vystavené
+          Zpět
         </button>
-        <button
-          onClick={() => navigate("/invoices/received/" + person._id)}
-          style={{
-            backgroundColor: "orange",
-            color: "white",
-            padding: "8px 16px",
-            border: "none",
-            borderRadius: "4px",
-          }}
-        >
-          Přijaté
-        </button>
+      </div>
       </div>
     </>
   );

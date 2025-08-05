@@ -222,6 +222,16 @@ useEffect(() => {
           value={editMode ? "Uložit změny" : "Uložit fakturu"}
         />
       </form>
+      <div className="page-container">
+      <div className="button-container">
+        <button
+          onClick={() => navigate("/invoices")}
+          className="back-button"
+        >
+          Zpět
+        </button>
+      </div>
+      </div>
     </div>
   );
 };
