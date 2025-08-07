@@ -10,8 +10,9 @@ import cz.itnetwork.entity.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.webjars.NotFoundException;
-import java.math.BigDecimal;
+import org.springframework.data.domain.PageRequest;
 
+import java.math.BigDecimal;
 import java.time.Year;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -100,7 +101,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     public InvoiceStatisticsDTO getInvoiceStatistics() {
         int currentYear = Year.now().getValue();
 
-        // Změna typu na BigDecimal a získání hodnot z repository
         BigDecimal currentYearSum = invoiceRepository.sumPriceByYearAndHiddenFalse(currentYear);
         BigDecimal allTimeSum = invoiceRepository.sumPriceAllTimeAndHiddenFalse();
         long invoicesCount = invoiceRepository.countByHiddenFalse();
@@ -152,6 +152,25 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         existing = invoiceRepository.save(existing);
         return invoiceMapper.toDTO(existing);
+    }
+
+    @Override
+    public List<InvoiceDTO> getFilteredInvoices(Long buyerId, Long sellerId, String product, Integer minPrice, Integer maxPrice, Integer limit) {
+        // Pokud limit není zadán nebo je menší než 1, nastavíme defaultní velký limit (např. 1000)
+        int pageSize = (limit == null || limit < 1) ? 1000 : limit;
+
+        List<InvoiceEntity> results = invoiceRepository.findFiltered(
+                buyerId,
+                sellerId,
+                product,
+                minPrice,
+                maxPrice,
+                PageRequest.of(0, pageSize)
+        );
+
+        return results.stream()
+                .map(invoiceMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     private InvoiceEntity fetchInvoiceById(long id) {

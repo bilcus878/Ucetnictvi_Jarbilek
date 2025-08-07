@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-// Základní URL adresa pro všechny metody v tomto kontroleru
 @RequestMapping("/api/invoices")
 public class InvoiceController {
 
@@ -21,39 +20,41 @@ public class InvoiceController {
         this.invoiceService = invoiceService;
     }
 
-    // Vytvoření nové faktury pomocí HTTP POST požadavku
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED) // HTTP 201 při úspěchu
+    @ResponseStatus(HttpStatus.CREATED)
     public InvoiceDTO addInvoice(@RequestBody InvoiceDTO invoiceDTO) {
-        return invoiceService.addInvoice(invoiceDTO); // Zavolání servisní metody
+        return invoiceService.addInvoice(invoiceDTO);
     }
 
-    // Získání seznamu všech nezakázaných (nezakrytých) faktur
+    // Upravený GET endpoint pro filtrování
     @GetMapping
-    public List<InvoiceDTO> getInvoices() {
-        return invoiceService.getAll(); // Vrací seznam všech faktur
+    public List<InvoiceDTO> getInvoices(
+            @RequestParam(required = false) Long buyerId,
+            @RequestParam(required = false) Long sellerId,
+            @RequestParam(required = false) String product,
+            @RequestParam(required = false) Integer minPrice,
+            @RequestParam(required = false) Integer maxPrice,
+            @RequestParam(required = false) Integer limit
+    ) {
+        return invoiceService.getFilteredInvoices(buyerId, sellerId, product, minPrice, maxPrice, limit);
     }
 
-    // Získání detailu jedné faktury podle jejího ID
     @GetMapping("/{invoiceId}")
     public InvoiceDTO getInvoiceById(@PathVariable long invoiceId) {
         return invoiceService.getInvoice(invoiceId);
     }
 
-    // "Smazání" faktury – nastaví ji jako skrytou (hidden = true)
     @DeleteMapping("/{invoiceId}")
-    @ResponseStatus(HttpStatus.NO_CONTENT) // HTTP 204 při úspěchu, bez obsahu
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteInvoice(@PathVariable long invoiceId) {
         invoiceService.removeInvoice(invoiceId);
     }
 
-    // Získání všech faktur, které vystavila osoba se zadaným ID
     @GetMapping("/sent/{sellerId}")
     public List<InvoiceDTO> getInvoicesBySeller(@PathVariable Long sellerId) {
         return invoiceService.getInvoicesBySeller(sellerId);
     }
 
-    // Získání všech faktur, které přijala osoba se zadaným ID
     @GetMapping("/received/{buyerId}")
     public List<InvoiceDTO> getInvoicesByBuyer(@PathVariable Long buyerId) {
         return invoiceService.getInvoicesByBuyer(buyerId);

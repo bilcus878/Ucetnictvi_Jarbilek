@@ -1,27 +1,4 @@
-/*  _____ _______         _                      _
- * |_   _|__   __|       | |                    | |
- *   | |    | |_ __   ___| |___      _____  _ __| | __  ___ ____
- *   | |    | | '_ \ / _ \ __\ \ /\ / / _ \| '__| |/ / / __|_  /
- *  _| |_   | | | | |  __/ |_ \ V  V / (_) | |  |   < | (__ / /
- * |_____|  |_|_| |_|\___|\__| \_/\_/ \___/|_|  |_|\_(_)___/___|
- *                                _
- *              ___ ___ ___ _____|_|_ _ _____
- *             | . |  _| -_|     | | | |     |  LICENCE
- *             |  _|_| |___|_|_|_|_|___|_|_|_|
- *             |_|
- *
- *   PROGRAMOVÁNÍ  <>  DESIGN  <>  PRÁCE/PODNIKÁNÍ  <>  HW A SW
- *
- * Tento zdrojový kód je součástí výukových seriálů na
- * IT sociální síti WWW.ITNETWORK.CZ
- *
- * Kód spadá pod licenci prémiového obsahu a vznikl díky podpoře
- * našich členů. Je určen pouze pro osobní užití a nesmí být šířen.
- * Více informací na http://www.itnetwork.cz/licence
- */
-
-
-const API_URL = "http://localhost:8080";
+const API_URL = "http://localhost:8080";  
 
 const fetchData = (url, requestOptions) => {
     const apiUrl = `${API_URL}${url}`;
@@ -40,18 +17,20 @@ const fetchData = (url, requestOptions) => {
         });
 };
 
-export const apiGet = (url, params) => {
-    const filteredParams = Object.fromEntries(
-        Object.entries(params || {}).filter(([_, value]) => value != null)
-    );
+export async function apiGet(path, params = {}) {
+  const url = new URL("http://localhost:8080" + path);
+  Object.keys(params).forEach(key => {
+    if (params[key] !== undefined && params[key] !== null && params[key] !== "") {
+      url.searchParams.append(key, params[key]);
+    }
+  });
 
-    const apiUrl = `${url}?${new URLSearchParams(filteredParams)}`;
-    const requestOptions = {
-        method: "GET",
-    };
-
-    return fetchData(apiUrl, requestOptions);
-};
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error(`Network response was not ok: ${response.status}`);
+  }
+  return response.json();
+}
 
 export const apiPost = (url, data) => {
     const requestOptions = {

@@ -2,6 +2,7 @@ package cz.itnetwork.service;
 
 import cz.itnetwork.dto.InvoiceDTO;
 import cz.itnetwork.dto.InvoiceStatisticsDTO;
+
 import java.util.List;
 
 public interface InvoiceService {
@@ -22,5 +23,8 @@ public interface InvoiceService {
 
     InvoiceStatisticsDTO getInvoiceStatistics();
 
+    // 🔍 Nová metoda pro filtrování
+    List<InvoiceDTO> getFilteredInvoices(Long buyerId, Long sellerId, String product, Integer minPrice, Integer maxPrice, Integer limit);
 }
+
 
